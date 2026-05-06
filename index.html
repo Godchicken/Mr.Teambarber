@@ -48,6 +48,14 @@
     opacity: 0.045;
   }
 
+  .logo-img {
+  width: 140px;
+  max-width: 40vw;
+  margin-bottom: 32px;
+  filter: drop-shadow(0 0 20px rgba(192,57,43,0.35));
+  animation: fadeUp 0.8s ease both;
+  }
+
   .pole-stripe {
     position: absolute;
     width: 100%;
@@ -123,14 +131,7 @@
     position: relative;
   }
 
-  /* Barber pole icon SVG animated */
-  .pole-icon {
-    width: 56px;
-    height: 120px;
-    margin-bottom: 32px;
-    filter: drop-shadow(0 0 18px rgba(192,57,43,0.5));
-    animation: poleFadeIn 1s ease both;
-  }
+  <img src="img/logo.png" class="logo-img" alt="Mr Team Barber Logo">
 
   @keyframes poleFadeIn {
     from { opacity: 0; transform: translateY(-20px); }
