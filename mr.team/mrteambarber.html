@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mr. Team Barber</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@300;400;600&family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --dark: #111111;
+    --card: #181818;
+    --white: #f5f5f5;
+    --gray: #888;
+    --red: #c0392b;
+    --gold: #d4a843;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Sarabun', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ─── BARBER POLE BACKGROUND ─── */
+  .barber-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .pole-wrap {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    height: calc(100vh + 40px);
+    display: flex;
+    justify-content: center;
+    opacity: 0.045;
+  }
+
+  .pole-stripe {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      -45deg,
+      #fff 0px,
+      #fff 40px,
+      #c0392b 40px,
+      #c0392b 80px,
+      #0a0a0a 80px,
+      #0a0a0a 120px
+    );
+    background-size: 170px 170px;
+    animation: poleScroll 6s linear infinite;
+  }
+
+  @keyframes poleScroll {
+    from { background-position: 0 0; }
+    to   { background-position: 170px 170px; }
+  }
+
+  /* ─── LAYOUT ─── */
+  .page { position: relative; z-index: 1; }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 48px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.92), transparent);
+    backdrop-filter: blur(2px);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 4px;
+    color: var(--white);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--gray);
+    text-decoration: none;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--white); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 100px 24px 60px;
+    position: relative;
+  }
+
+  /* Barber pole icon SVG animated */
+  .pole-icon {
+    width: 56px;
+    height: 120px;
+    margin-bottom: 32px;
+    filter: drop-shadow(0 0 18px rgba(192,57,43,0.5));
+    animation: poleFadeIn 1s ease both;
+  }
+
+  @keyframes poleFadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 6px;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4.5rem, 12vw, 10rem);
+    line-height: 0.9;
+    letter-spacing: 8px;
+    color: var(--white);
+    animation: fadeUp 0.8s 0.35s ease both;
+  }
+
+  .hero-title span {
+    display: block;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255,255,255,0.3);
+    font-size: clamp(2.5rem, 7vw, 6rem);
+    letter-spacing: 16px;
+  }
+
+  .hero-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 28px 0;
+    animation: fadeUp 0.8s 0.5s ease both;
+  }
+
+  .hero-divider-line {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold));
+  }
+
+  .hero-divider-line.r {
+    background: linear-gradient(to left, transparent, var(--gold));
+  }
+
+  .scissors-icon {
+    color: var(--gold);
+    font-size: 1.2rem;
+  }
+
+  .hero-sub {
+    font-family: 'Sarabun', sans-serif;
+    font-size: 1rem;
+    color: var(--gray);
+    letter-spacing: 2px;
+    animation: fadeUp 0.8s 0.6s ease both;
+  }
+
+  .hero-cta {
+    margin-top: 40px;
+    display: flex;
+    gap: 16px;
+    animation: fadeUp 0.8s 0.75s ease both;
+  }
+
+  .btn-primary {
+    background: var(--white);
+    color: var(--black);
+    padding: 14px 36px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.3s, color 0.3s, transform 0.2s;
+  }
+
+  .btn-primary:hover {
+    background: var(--gold);
+    transform: translateY(-2px);
+  }
+
+  .btn-outline {
+    border: 1px solid rgba(255,255,255,0.25);
+    color: var(--white);
+    padding: 14px 36px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: border-color 0.3s, transform 0.2s;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--white);
+    transform: translateY(-2px);
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.35;
+    animation: bounce 2s infinite;
+  }
+
+  .scroll-hint span {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── SECTIONS ─── */
+  section {
+    padding: 100px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 5px;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    letter-spacing: 4px;
+    line-height: 1;
+    margin-bottom: 48px;
+  }
+
+  .section-title em {
+    font-style: normal;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+  }
+
+  /* ─── GALLERY ─── */
+  #gallery { max-width: 100%; padding: 100px 0; }
+
+  #gallery .inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .gallery-track-wrap {
+    overflow: hidden;
+    position: relative;
+    margin-top: 0;
+  }
+
+  .gallery-track-wrap::before,
+  .gallery-track-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 120px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .gallery-track-wrap::before {
+    left: 0;
+    background: linear-gradient(to right, var(--black), transparent);
+  }
+
+  .gallery-track-wrap::after {
+    right: 0;
+    background: linear-gradient(to left, var(--black), transparent);
+  }
+
+  .gallery-track {
+    display: flex;
+    gap: 16px;
+    padding: 8px 0 24px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    cursor: grab;
+    user-select: none;
+  }
+
+  .gallery-track::-webkit-scrollbar { display: none; }
+  .gallery-track.grabbing { cursor: grabbing; }
+
+  .gallery-item {
+    flex: 0 0 300px;
+    height: 380px;
+    scroll-snap-align: center;
+    overflow: hidden;
+    position: relative;
+    background: var(--card);
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease, filter 0.4s ease;
+    filter: grayscale(20%);
+    display: block;
+  }
+
+  .gallery-item:hover img {
+    transform: scale(1.06);
+    filter: grayscale(0%);
+  }
+
+  .gallery-item-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 60%;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+    display: flex;
+    align-items: flex-end;
+    padding: 16px;
+  }
+
+  .gallery-item:hover .gallery-item-overlay { opacity: 1; }
+
+  .gallery-tag {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .gallery-nav {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    justify-content: center;
+  }
+
+  .gallery-btn {
+    width: 44px; height: 44px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: transparent;
+    color: var(--white);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.3s, border-color 0.3s;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .gallery-btn:hover {
+    background: var(--white);
+    color: var(--black);
+    border-color: var(--white);
+  }
+
+  /* ─── REVIEWS ─── */
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .review-card {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 28px;
+    position: relative;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+
+  .review-card::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 24px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 6rem;
+    color: var(--red);
+    line-height: 1;
+    opacity: 0.4;
+  }
+
+  .review-card:hover {
+    border-color: rgba(255,255,255,0.18);
+    transform: translateY(-4px);
+  }
+
+  .stars {
+    color: var(--gold);
+    font-size: 0.85rem;
+    margin-bottom: 14px;
+    letter-spacing: 2px;
+  }
+
+  .review-text {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #bbb;
+    margin-bottom: 18px;
+  }
+
+  .reviewer {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    color: var(--white);
+    text-transform: uppercase;
+  }
+
+  /* ─── LOCATION ─── */
+  .location-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    .location-block { grid-template-columns: 1fr; }
+  }
+
+  .location-info p {
+    color: var(--gray);
+    line-height: 1.9;
+    font-size: 0.95rem;
+    margin-bottom: 24px;
+  }
+
+  .location-info strong {
+    color: var(--white);
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 1px;
+  }
+
+  .hours-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 32px;
+    margin-top: 8px;
+  }
+
+  .hours-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #999;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .hours-item span:last-child { color: var(--white); }
+
+  .map-placeholder {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.08);
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+    color: var(--gray);
+    text-align: center;
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 3px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    text-decoration: none;
+  }
+
+  .map-placeholder:hover { border-color: rgba(255,255,255,0.25); color: var(--white); }
+  .map-placeholder .map-icon { font-size: 2.5rem; margin-bottom: 4px; }
+
+  /* ─── DIVIDER ─── */
+  .full-divider {
+    max-width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+    margin: 0;
+  }
+
+  /* ─── FOOTER / CONTACT ─── */
+  footer {
+    background: #080808;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 64px 24px 40px;
+    text-align: center;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    letter-spacing: 10px;
+    margin-bottom: 8px;
+  }
+
+  .footer-tagline {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 5px;
+    color: var(--gray);
+    text-transform: uppercase;
+    margin-bottom: 48px;
+  }
+
+  .contact-grid {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    flex-wrap: wrap;
+    margin-bottom: 48px;
+  }
+
+  .contact-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--white);
+    transition: transform 0.3s;
+  }
+
+  .contact-item:hover { transform: translateY(-4px); }
+
+  .contact-icon {
+    width: 52px; height: 52px;
+    border: 1px solid rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    transition: background 0.3s, border-color 0.3s;
+  }
+
+  .contact-item:hover .contact-icon {
+    background: var(--white);
+    border-color: var(--white);
+    color: var(--black);
+  }
+
+  .contact-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    color: var(--gray);
+    text-transform: uppercase;
+  }
+
+  .contact-value {
+    font-size: 0.85rem;
+    color: #ccc;
+  }
+
+  .footer-copy {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 2px;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  /* ─── STATS ─── */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+    background: var(--card);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .stat-item {
+    flex: 1;
+    min-width: 160px;
+    padding: 36px 24px;
+    text-align: center;
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .stat-item:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    letter-spacing: 4px;
+    line-height: 1;
+    color: var(--white);
+  }
+
+  .stat-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    color: var(--gray);
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* ─── MOBILE ─── */
+  @media (max-width: 640px) {
+    nav { padding: 16px 20px; }
+    .nav-links { gap: 20px; }
+    .nav-links li:nth-child(3), .nav-links li:nth-child(4) { display: none; }
+    .hero-cta { flex-direction: column; align-items: center; }
+    .gallery-item { flex: 0 0 240px; height: 300px; }
+    .contact-grid { gap: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Background -->
+<div class="barber-bg">
+  <div class="pole-wrap">
+    <div class="pole-stripe"></div>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- Nav -->
+<nav>
+  <div class="nav-logo">MR. TEAM</div>
+  <ul class="nav-links">
+    <li><a href="#gallery">ผลงาน</a></li>
+    <li><a href="#reviews">รีวิว</a></li>
+    <li><a href="#location">ที่ตั้ง</a></li>
+    <li><a href="#contact">ติดต่อ</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <!-- Animated barber pole SVG -->
+  <svg class="pole-icon" viewBox="0 0 56 120" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <clipPath id="poleClip">
+        <rect x="18" y="10" width="20" height="90" rx="4"/>
+      </clipPath>
+      <linearGradient id="capGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#888"/>
+        <stop offset="50%" stop-color="#eee"/>
+        <stop offset="100%" stop-color="#888"/>
+      </linearGradient>
+    </defs>
+    <!-- Stand -->
+    <rect x="22" y="100" width="12" height="14" rx="2" fill="#555"/>
+    <rect x="16" y="112" width="24" height="5" rx="2" fill="#444"/>
+    <!-- Pole body -->
+    <rect x="18" y="10" width="20" height="90" rx="4" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+    <!-- Stripes clipped to pole -->
+    <g clip-path="url(#poleClip)">
+      <rect x="14" y="10" width="8" height="90" fill="white" opacity="0.9"/>
+      <rect x="22" y="10" width="8" height="90" fill="#c0392b"/>
+      <rect x="30" y="10" width="8" height="90" fill="white" opacity="0.9"/>
+      <animateTransform attributeName="transform" type="translate" values="0,0;0,16;0,0" dur="1.5s" repeatCount="indefinite" additive="sum"/>
+    </g>
+    <!-- Cap top -->
+    <rect x="15" y="6" width="26" height="8" rx="4" fill="url(#capGrad)"/>
+    <rect x="15" y="4" width="26" height="4" rx="2" fill="url(#capGrad)"/>
+  </svg>
+
+  <p class="hero-eyebrow">✦ Professional Barbershop ✦</p>
+  <h1 class="hero-title">
+    MR. TEAM
+    <span>BARBER</span>
+  </h1>
+
+  <div class="hero-divider">
+    <div class="hero-divider-line"></div>
+    <span class="scissors-icon">✂</span>
+    <div class="hero-divider-line r"></div>
+  </div>
+
+  <p class="hero-sub">ตัดผม · แต่งทรง · สไตล์ที่ใช่สำหรับคุณ</p>
+
+  <div class="hero-cta">
+    <a href="tel:0918298450" class="btn-primary">นัดตัดผม</a>
+    <a href="#gallery" class="btn-outline">ดูผลงาน</a>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <svg width="16" height="24" viewBox="0 0 16 24" fill="none">
+      <rect x="1" y="1" width="14" height="22" rx="7" stroke="white" stroke-width="1.5" opacity="0.4"/>
+      <rect x="7" y="5" width="2" height="6" rx="1" fill="white" opacity="0.6">
+        <animate attributeName="y" values="5;12;5" dur="1.8s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;0;0.6" dur="1.8s" repeatCount="indefinite"/>
+      </rect>
+    </svg>
+  </div>
+</section>
+
+<!-- Stats -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num">500<span style="color:var(--red)">+</span></div>
+    <div class="stat-label">ลูกค้าพอใจ</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">3<span style="color:var(--red)">+</span></div>
+    <div class="stat-label">ปีประสบการณ์</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">4.9<span style="color:var(--gold)" style="font-size:2rem"> ★</span></div>
+    <div class="stat-label">คะแนนรีวิว</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">20<span style="color:var(--red)">+</span></div>
+    <div class="stat-label">แบบทรงผม</div>
+  </div>
+</div>
+
+<!-- Gallery -->
+<div id="gallery">
+  <div class="inner">
+    <p class="section-label">✦ Portfolio</p>
+    <h2 class="section-title">ผลงาน <em>ของเรา</em></h2>
+  </div>
+
+  <div class="gallery-track-wrap">
+    <div class="gallery-track" id="galleryTrack">
+      <div class="gallery-item">
+        <img src="/mnt/user-data/uploads/IMG_7167.jpeg" alt="ผลงานตัดผม 1" loading="lazy"/>
+        <div class="gallery-item-overlay"><span class="gallery-tag">Bowl Cut · Fade</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="/mnt/user-data/uploads/IMG_7168.jpeg" alt="ผลงานตัดผม 2" loading="lazy"/>
+        <div class="gallery-item-overlay"><span class="gallery-tag">Two-Block · Color</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="/mnt/user-data/uploads/IMG_7171.jpeg" alt="ผลงานตัดผม 3" loading="lazy"/>
+        <div class="gallery-item-overlay"><span class="gallery-tag">Korean Cut · Undercut</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="/mnt/user-data/uploads/IMG_7170.jpeg" alt="ผลงานตัดผม 4" loading="lazy"/>
+        <div class="gallery-item-overlay"><span class="gallery-tag">Slick Back · Taper</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="/mnt/user-data/uploads/IMG_7169.jpeg" alt="ผลงานตัดผม 5" loading="lazy"/>
+        <div class="gallery-item-overlay"><span class="gallery-tag">Buzz Cut · Clean</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="/mnt/user-data/uploads/IMG_7174.jpeg" alt="ผลงานตัดผม 6" loading="lazy"/>
+        <div class="gallery-item-overlay"><span class="gallery-tag">Crop · Drop Fade</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="/mnt/user-data/uploads/IMG_7173.jpeg" alt="ผลงานตัดผม 7" loading="lazy"/>
+        <div class="gallery-item-overlay"><span class="gallery-tag">Curly · Skin Fade</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="/mnt/user-data/uploads/IMG_7172.jpeg" alt="ผลงานตัดผม 8" loading="lazy"/>
+        <div class="gallery-item-overlay"><span class="gallery-tag">Textured Crop</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gallery-nav">
+    <button class="gallery-btn" id="prevBtn">&#8592;</button>
+    <button class="gallery-btn" id="nextBtn">&#8594;</button>
+  </div>
+</div>
+
+<div class="full-divider"></div>
+
+<!-- Reviews -->
+<section id="reviews">
+  <p class="section-label">✦ Reviews</p>
+  <h2 class="section-title">สิ่งที่ <em>ลูกค้าพูด</em></h2>
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">ตัดผมได้สวยมาก ช่างฝีมือดีมากๆ ทรงออกมาตรงใจเลย จะกลับมาตัดอีกแน่นอน แนะนำเลยครับ</p>
+      <span class="reviewer">— ลูกค้า Google Maps</span>
+    </div>
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">บรรยากาศร้านดีมาก ช่างใจดี คุยง่าย ตัดได้ตามที่ต้องการ ราคาไม่แพง คุ้มมากๆ ครับ</p>
+      <span class="reviewer">— ลูกค้า Facebook</span>
+    </div>
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">ประทับใจมากเลย ตัดผมสวย ทรงผมดูดีขึ้นมาก ช่างเป็นมืออาชีพจริงๆ ไม่ผิดหวังแน่นอน</p>
+      <span class="reviewer">— ลูกค้า Google Maps</span>
+    </div>
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- Location -->
+<section id="location">
+  <p class="section-label">✦ Find Us</p>
+  <h2 class="section-title">ที่ตั้ง <em>ร้าน</em></h2>
+  <div class="location-block">
+    <div class="location-info">
+      <p>
+        <strong>Mr. Team Barber</strong><br>
+        ร้านตัดผมชาย สไตล์มืออาชีพ<br>
+        ทุกทรงทำได้ ทุกสไตล์ที่ต้องการ
+      </p>
+      <p>
+        <strong>เวลาทำการ</strong>
+      </p>
+      <div class="hours-grid">
+        <div class="hours-item"><span>จันทร์ – ศุกร์</span><span>10:00 – 20:00</span></div>
+        <div class="hours-item"><span>เสาร์ – อาทิตย์</span><span>09:00 – 20:00</span></div>
+      </div>
+    </div>
+    <a href="https://maps.app.goo.gl/81bJKiyvrUDqVoWF8" target="_blank" class="map-placeholder">
+      <span class="map-icon">📍</span>
+      <span>ดูแผนที่</span>
+      <span style="color: var(--gray); font-size: 0.6rem; letter-spacing: 2px;">GOOGLE MAPS</span>
+    </a>
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- Footer / Contact -->
+<footer id="contact">
+  <div class="footer-logo">MR. TEAM BARBER</div>
+  <p class="footer-tagline">Professional Barbershop · ตัดผมชาย</p>
+
+  <div class="contact-grid">
+    <a href="tel:0918298450" class="contact-item">
+      <div class="contact-icon">📞</div>
+      <span class="contact-label">โทรศัพท์</span>
+      <span class="contact-value">091-829-8450</span>
+    </a>
+
+    <a href="https://www.facebook.com/MrTeamBarber" target="_blank" class="contact-item">
+      <div class="contact-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+        </svg>
+      </div>
+      <span class="contact-label">Facebook</span>
+      <span class="contact-value">Mr Team Barber</span>
+    </a>
+
+    <a href="https://line.me/ti/p/~mrteambarber" target="_blank" class="contact-item">
+      <div class="contact-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.036 9.608.391.084.922.258 1.057.592.121.303.079.778.039 1.085l-.171 1.027c-.053.303-.242 1.186 1.039.647 1.281-.54 6.911-4.069 9.428-6.967C23.057 14.675 24 12.607 24 10.304z"/>
+        </svg>
+      </div>
+      <span class="contact-label">Line</span>
+      <span class="contact-value">Mr Team Barber</span>
+    </a>
+  </div>
+
+  <p class="footer-copy">© 2025 Mr. Team Barber · All Rights Reserved · ✂ Cut with Passion</p>
+</footer>
+
+</div><!-- end .page -->
+
+<script>
+// Gallery drag scroll
+const track = document.getElementById('galleryTrack');
+let isDragging = false, startX, scrollLeft;
+
+track.addEventListener('mousedown', e => {
+  isDragging = true;
+  track.classList.add('grabbing');
+  startX = e.pageX - track.offsetLeft;
+  scrollLeft = track.scrollLeft;
+});
+document.addEventListener('mousemove', e => {
+  if (!isDragging) return;
+  e.preventDefault();
+  const x = e.pageX - track.offsetLeft;
+  track.scrollLeft = scrollLeft - (x - startX) * 1.5;
+});
+document.addEventListener('mouseup', () => {
+  isDragging = false;
+  track.classList.remove('grabbing');
+});
+
+// Touch support
+track.addEventListener('touchstart', e => {
+  startX = e.touches[0].pageX - track.offsetLeft;
+  scrollLeft = track.scrollLeft;
+}, { passive: true });
+track.addEventListener('touchmove', e => {
+  const x = e.touches[0].pageX - track.offsetLeft;
+  track.scrollLeft = scrollLeft - (x - startX);
+}, { passive: true });
+
+// Nav buttons
+document.getElementById('prevBtn').addEventListener('click', () => {
+  track.scrollBy({ left: -316, behavior: 'smooth' });
+});
+document.getElementById('nextBtn').addEventListener('click', () => {
+  track.scrollBy({ left: 316, behavior: 'smooth' });
+});
+
+// Fade-in on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.review-card, .stat-item, .gallery-item').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(24px)';
+  el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
