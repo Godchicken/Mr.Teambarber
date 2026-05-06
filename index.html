@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -714,7 +715,7 @@
   <p class="hero-sub">ตัดผม · แต่งทรง · สไตล์ที่ใช่สำหรับคุณ</p>
 
   <div class="hero-cta">
-    <a href="tel:0918298450" class="btn-primary">นัดตัดผม</a>
+    <a href="https://line.me/R/ti/p/@232yiadq" class="btn-primary">นัดตัดผม</a>
     <a href="#gallery" class="btn-outline">ดูผลงาน</a>
   </div>
 
@@ -733,19 +734,19 @@
 <!-- Stats -->
 <div class="stats-bar">
   <div class="stat-item">
-    <div class="stat-num">500<span style="color:var(--red)">+</span></div>
-    <div class="stat-label">ลูกค้าพอใจ</div>
+    <div class="stat-num" data-target="500">0<span style="color:var(--red)">+</span></div>
+    <div class="stat-label">รับลูกค้ามาแล้ว</div>
   </div>
   <div class="stat-item">
-    <div class="stat-num">3<span style="color:var(--red)">+</span></div>
-    <div class="stat-label">ปีประสบการณ์</div>
+    <div class="stat-num" data-target="3">0<span style="color:var(--red)">+</span></div>
+    <div class="stat-label">เปิดร้านมาแล้ว </div>
   </div>
   <div class="stat-item">
-    <div class="stat-num">4.9<span style="color:var(--gold)" style="font-size:2rem"> ★</span></div>
+    <div class="stat-num" data-target="4.9">0<span style="color:var(--gold)" style="font-size:2rem"> ★</span></div>
     <div class="stat-label">คะแนนรีวิว</div>
   </div>
   <div class="stat-item">
-    <div class="stat-num">20<span style="color:var(--red)">+</span></div>
+    <div class="stat-num" data-target="20">0<span style="color:var(--red)">+</span></div>
     <div class="stat-label">แบบทรงผม</div>
   </div>
 </div>
@@ -805,7 +806,7 @@
 <!-- Reviews -->
 <section id="reviews">
   <p class="section-label">✦ Reviews</p>
-  <h2 class="section-title">สิ่งที่ <em>ลูกค้าพูด</em></h2>
+  <h2 class="section-title">รีวิว <em>จากลูกค้าจริง</em></h2>
   <div class="reviews-grid">
     <div class="review-card">
       <div class="stars">★★★★★</div>
@@ -950,6 +951,46 @@ document.querySelectorAll('.review-card, .stat-item, .gallery-item').forEach(el 
   el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
   observer.observe(el);
 });
+// ===== COUNT NUMBER ANIMATION =====
+const counters = document.querySelectorAll('.stat-num');
+
+const counterObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const counter = entry.target;
+
+      const updateCount = () => {
+        const target = parseFloat(counter.dataset.target);
+        let current = parseFloat(counter.innerText);
+
+        if (isNaN(current)) current = 0;
+
+        const increment = Math.max(target / 50, 1);
+
+        if (current < target) {
+          let value = current + increment;
+
+          // เช็คเลขทศนิยมหรือไม่
+          if (Number.isInteger(target)) {
+            value = Math.floor(value);
+          } else {
+            value = value.toFixed(1);
+          }
+
+          counter.childNodes[0].nodeValue = value;
+          setTimeout(updateCount, 30);
+        } else {
+          counter.childNodes[0].nodeValue = target;
+        }
+      };
+
+      updateCount();
+      counterObserver.unobserve(counter);
+    }
+  });
+});
+
+counters.forEach(counter => counterObserver.observe(counter));
 </script>
 </body>
 </html>
