@@ -131,8 +131,6 @@
     position: relative;
   }
 
-  <img src="img/logo.PNG" class="logo-img" alt="Mr Team Barber Logo">
-
   @keyframes poleFadeIn {
     from { opacity: 0; transform: translateY(-20px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -697,34 +695,9 @@
 
 <!-- Hero -->
 <section class="hero">
-  <!-- Animated barber pole SVG -->
-  <svg class="pole-icon" viewBox="0 0 56 120" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <clipPath id="poleClip">
-        <rect x="18" y="10" width="20" height="90" rx="4"/>
-      </clipPath>
-      <linearGradient id="capGrad" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stop-color="#888"/>
-        <stop offset="50%" stop-color="#eee"/>
-        <stop offset="100%" stop-color="#888"/>
-      </linearGradient>
-    </defs>
-    <!-- Stand -->
-    <rect x="22" y="100" width="12" height="14" rx="2" fill="#555"/>
-    <rect x="16" y="112" width="24" height="5" rx="2" fill="#444"/>
-    <!-- Pole body -->
-    <rect x="18" y="10" width="20" height="90" rx="4" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
-    <!-- Stripes clipped to pole -->
-    <g clip-path="url(#poleClip)">
-      <rect x="14" y="10" width="8" height="90" fill="white" opacity="0.9"/>
-      <rect x="22" y="10" width="8" height="90" fill="#c0392b"/>
-      <rect x="30" y="10" width="8" height="90" fill="white" opacity="0.9"/>
-      <animateTransform attributeName="transform" type="translate" values="0,0;0,16;0,0" dur="1.5s" repeatCount="indefinite" additive="sum"/>
-    </g>
-    <!-- Cap top -->
-    <rect x="15" y="6" width="26" height="8" rx="4" fill="url(#capGrad)"/>
-    <rect x="15" y="4" width="26" height="4" rx="2" fill="url(#capGrad)"/>
-  </svg>
+
+  <img src="img/logo.PNG" class="logo-img" alt="Mr Team Barber Logo">
+
 
   <p class="hero-eyebrow">✦ Professional Barbershop ✦</p>
   <h1 class="hero-title">
